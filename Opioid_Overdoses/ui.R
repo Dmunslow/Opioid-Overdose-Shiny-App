@@ -17,12 +17,26 @@ shinyUI(pageWithSidebar(
   
   headerPanel("Opioid Overdose Geochart - United states"),
   sidebarPanel(
-      sliderInput("Year", "Select Year to be displayed:",
-                  min = 2000, max =2015, value = 2000, step = 1,
-                  animate = TRUE )
-  ),
+      
+      checkboxInput("allOpioids", "All Opioids", value = TRUE),
+      radioButtons("odType", "Choose type of Opioid Overdose:",
+                   c("All Opioids" = "All Opioids", 
+                     "Heroin" = "Heroin",
+                     "Other Opioids (includes Prescription)" = "Other opioids",
+                     "Other Synthetic Narcotics (includes fentanyl)" = "Other synthetic narcotics",
+                     "Methadone" = "Methadone" )),
+      radioButtons("statType", "Choose Statistic:",
+                         c("Total Deaths" = "Deaths", 
+                           "Death Rate (per 100,000)" = "Crude_Rate",
+                           "As Percentage of Total Deaths" = "PCT_of_Total_Deaths"))
+      ),
+      
+      
  
   mainPanel(
+      sliderInput("Year", "Select Year to be displayed:",
+                  min = 2000, max =2015, value = 2000, step = 1,
+                  animate = TRUE, sep = "" ),
      h3(textOutput("year")),
      htmlOutput("cloropleth")
   )

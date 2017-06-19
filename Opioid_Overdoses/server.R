@@ -9,9 +9,12 @@
 require(shiny)
 require(googleVis)
 
+
 #Load overdose data 
-overdose_states <- read.csv("./overdose_processed_states.csv", header = T)
-overdose_US <- read.table("./overdoses_us.txt",header = T)
+overdose_states <- read.csv("./data/overdose_processed_states.csv", header = T)
+overdose_US <- read.table("./data/overdoses_us.txt",header = T)
+
+
 
 library(shiny)
 
@@ -25,14 +28,24 @@ shinyServer(function(input, output) {
     output$year <- renderText({
         paste("Opioid Overdose Deaths in ", displayYear())
     })
+    
+    df_subset <- reactive({
+        data <- overdose_states[overdose_states$Year == input$Year,]
+        data <- overdose_states[overdose_states$Multiple_Cause_of_death == input$odType,]
+        return(data)
+    })
+    
+    stat_type <- reactive(({
+        input$statType
+    }))
  
     output$cloropleth <- renderGvis({
-        data <- overdose_states[Year == displayYear(),]
-        
-        gvisGeoChart(overdose_all, "State", "Crude_Rate", options = list(region="US",
-                                                                         displayMode = "regions",
-                                                                         resolution = "provinces",
-                                                                          width = 500, height = 400))
+        data <- df_subset()
+        stat <- stat_type()
+        gvisGeoChart(data, "State", stat, options = list(region="US",
+                                                             displayMode = "regions",
+                                                             resolution = "provinces",
+                                                             width = 500, height = 400))
     })
   
 })
