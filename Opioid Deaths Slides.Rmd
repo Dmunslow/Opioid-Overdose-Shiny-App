@@ -1,0 +1,45 @@
+---
+title: "Opioid Overdoses in the US"
+author: "Duncan Munslow"
+date: "June 19, 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## America's' Opioid Epidemic
+Since the year 2000, America has seen the death rate for opioid overdoses increase by more than 400% (Source: [CDC WONDER](https://wonder.cdc.gov/)).  This has been driven not only by a sharp rise in heroin and other opioid narcotic overdoses, but also by prescription opioid overdoses.  My app aims aims at creating an interactive data app which allows users to see where the opioid crisis has had the worst impact, and how the epidemic has evolved over time.
+
+## Opioid Overdose Interactive Choropleth
+My app utilizes the GoogleVis choropleth feature to display the data and allows the user to select the year, type of opioid overdose (All opoids, heroine, prescription etc), as well the statistic of measure ( Total Deaths, Death Rate, as % of All Deaths).  The app also includes a table of the data being graphed, allowing the user to view the raw data.  The code below produces an example of a choropleth which appear on the next slide. The choropleth displays total deaths due to all opioids in the US in 2015.
+
+```{r readData, message=F}
+library(googleVis)
+data <- read.csv("./overdose_processed_states.csv", header = T)
+data <- data[data$Year == 2015 & data$Multiple_Cause_of_death =="All Opioids",]
+```
+```{r choroplethEx, echo = T}
+## Graph: Total Opioid Deaths in the US 2000-2015
+g <- gvisGeoChart(data, "State", "Deaths", 
+                  options = list(region="US",
+                  displayMode = "regions",
+                  resolution = "provinces",
+                  width = 500, height = 400))
+```
+
+## Opioid Deaths in 2015 - Choropleth Example
+
+```{r pressure, message=F, results='asis', tidy=T}
+print(g)
+```
+
+## Interactive Data table
+Finally, my app will also allow the user to view the raw information which is being mapped, with an interactive table like the one below.
+
+```{r visTable, message = F, results='asis', tidy = T}
+g <- gvisTable(data, options= list( width=550,height= 275), formats = list(Year = "####"))
+g
+```
+
