@@ -4,4 +4,4 @@ This app uses data from the CDC WONDER database to graph opioid related overdose
 Due to privacy laws, State level data cannot be published if doing so may reveal the identities of the deceased.  For this reason, the state level data has many more NA values than the data for the US.
 
 
-You can use the app (here)[https://dmunslow.shinyapps.io/Opioid_Overdoses/]
+You can use the app [here](https://dmunslow.shinyapps.io/Opioid_Overdoses/)
